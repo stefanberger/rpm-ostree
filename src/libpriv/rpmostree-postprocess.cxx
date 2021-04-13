@@ -731,8 +731,11 @@ filter_xattrs_impl (OstreeRepo     *repo,
           if (g_str_equal (validkey, attrkey))
             {
               if (g_str_equal (validkey, "user.ima"))
+                {
                   g_variant_builder_add (&builder, "(@ay@ay)",
                                          g_variant_new_bytestring ("security.ima"), value);
+                  g_print ("Hardcode path... Added security.ima with value.\n");
+                }
               else
                   g_variant_builder_add (&builder, "(@ay@ay)", key, value);
             }
