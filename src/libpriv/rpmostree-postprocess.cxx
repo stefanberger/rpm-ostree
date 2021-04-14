@@ -1416,7 +1416,8 @@ filter_xattrs_impl (OstreeRepo     *repo,
   static const char *accepted_xattrs[] =
     { "security.capability", /* https://lwn.net/Articles/211883/ */
       "user.pax.flags", /* https://github.com/projectatomic/rpm-ostree/issues/412 */
-      "user.ima" /* will be replaced with security.ima */
+      "user.ima", /* will be replaced with security.ima */
+      "user.evm"  /* will be replaced with security.evm */
     };
   g_autoptr(GVariant) existing_xattrs = NULL;
   g_autoptr(GVariantIter) viter = NULL;
@@ -1463,6 +1464,12 @@ filter_xattrs_impl (OstreeRepo     *repo,
                   g_variant_builder_add (&builder, "(@ay@ay)",
                                          g_variant_new_bytestring("security.ima"), value);
                   g_print ("Hardcode path... Added security.ima with value.\n");
+                }
+              else if (g_str_equal (validkey, "user.evm"))
+                {
+                  g_variant_builder_add (&builder, "(@ay@ay)",
+                                         g_variant_new_bytestring("security.evm"), value);
+                  g_print ("Hardcode path... Added security.evm with value.\n");
                 }
               else
                   g_variant_builder_add (&builder, "(@ay@ay)", key, value);
